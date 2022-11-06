@@ -1,4 +1,5 @@
-//Hamburger Menu
+//Menu-icon
+
 const menuIcon = document.getElementById('menu-icon')
 const navigation = document.getElementById('navigation')
 
@@ -6,20 +7,40 @@ menuIcon.addEventListener('click', () => {
   navigation.classList.toggle('show')
 })
 
-// Slider
 
-let itemContainer = document.getElementById('slider')
+// On click clider
 
-let items = itemContainer.getElementsByClassName('item-bg')
-console.log(itemContainer)
-console.log(items)
+const images = document.querySelectorAll('[data-carousel-item]')
+images.forEach((image) => {
+  image.addEventListener('click', () => {
+   const images = image
+     .closest('[data-carousel]')
+      .querySelector('[data-slides]')
+    
+    const currentActive = images.querySelector('[data-active]')
+    image.dataset.active = true
+    delete currentActive.dataset.active
 
-for (let i = 0; i < items.length; i++) {
-  items[i].addEventListener('click', function () {
-    let current = document.getElementsByClassName('active-item')
-    console.log(current)
-    current[0].className = current[0].className.replace(' active-item', '')
-    this.className += ' active-item'
-    console.log(this.className)
   })
-}
+})
+
+
+// button slider
+
+const buttons = document.querySelectorAll('[data-carousel-button]')
+
+buttons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const offset = button.dataset.carouselButton === 'next' ? 1 : -1
+    const slides = button
+      .closest('[data-carousel]')
+      .querySelector('[data-slides]')
+
+    const activeSlide = slides.querySelector('[data-active]')
+    let newIndex = [...slides.children].indexOf(activeSlide) + offset
+    if (newIndex < 0) newIndex = slides.children.length - 1
+    if (newIndex >= slides.children.length) newIndex = 0
+    slides.children[newIndex].dataset.active = true
+    delete activeSlide.dataset.active
+  })
+})
